@@ -20,6 +20,7 @@ function writeInquiries(inquiries: any[]) {
 }
 
 export async function GET() {
+    console.log("GET /api/inquiries");
     const inquiries = readInquiries();
     return NextResponse.json(inquiries);
 }
@@ -29,7 +30,10 @@ export async function POST(request: Request) {
         const body = await request.json();
         const { name, email, service, message } = body;
 
+        console.log("POST /api/inquiries received:", { name, email, service });
+
         if (!name || !email || !service || !message) {
+            console.warn("POST /api/inquiries: Missing required fields");
             return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
         }
 
@@ -46,8 +50,10 @@ export async function POST(request: Request) {
         inquiries.unshift(newInquiry); // Add to the beginning
         writeInquiries(inquiries);
 
+        console.log("POST /api/inquiries: Success");
         return NextResponse.json(newInquiry, { status: 201 });
     } catch (error) {
-        return NextResponse.json({ error: 'Failed to process inquiry' }, { status: 500 });
+        console.error("POST /api/inquiries: Error", error);
+        return NextResponse.json({ error: 'Failed to process inquiry', details: error instanceof Error ? error.message : String(error) }, { status: 500 });
     }
 }

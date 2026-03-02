@@ -12,10 +12,12 @@ export const Contact = () => {
         message: ""
     });
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+    const [errorMessage, setErrorMessage] = useState("");
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setStatus("loading");
+        setErrorMessage("");
 
         try {
             const response = await fetch("/api/inquiries", {
@@ -24,6 +26,8 @@ export const Contact = () => {
                 body: JSON.stringify(formData)
             });
 
+            const data = await response.json();
+
             if (response.ok) {
                 setStatus("success");
                 setFormData({ name: "", email: "", service: "Custom Power BI Dashboard", message: "" });
@@ -31,9 +35,11 @@ export const Contact = () => {
                 setTimeout(() => setStatus("idle"), 5000);
             } else {
                 setStatus("error");
+                setErrorMessage(data.details || data.error || "Unknown server error");
             }
         } catch (error) {
             setStatus("error");
+            setErrorMessage(error instanceof Error ? error.message : "Failed to connect to server");
         }
     };
 
@@ -157,7 +163,9 @@ export const Contact = () => {
                             <p className="text-green-500 text-center text-sm font-bold">✓ Inquiry sent successfully! I'll get back to you soon.</p>
                         )}
                         {status === "error" && (
-                            <p className="text-red-500 text-center text-sm font-bold">Failed to send inquiry. Please try again later.</p>
+                            <p className="text-red-500 text-center text-sm font-bold">
+                                Failed to send inquiry: {errorMessage}
+                            </p>
                         )}
                     </form>
                 </GlassCard>
