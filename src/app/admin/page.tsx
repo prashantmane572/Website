@@ -1,12 +1,33 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Lock, LayoutDashboard, Database, FileText, Settings, LogOut, BarChart3 } from "lucide-react";
-import { useState } from "react";
 
 export default function AdminDashboard() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [password, setPassword] = useState("");
+    const [inquiries, setInquiries] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            fetchInquiries();
+        }
+    }, [isLoggedIn]);
+
+    const fetchInquiries = async () => {
+        setLoading(true);
+        try {
+            const response = await fetch("/api/inquiries");
+            const data = await response.json();
+            setInquiries(data);
+        } catch (error) {
+            console.error("Failed to fetch inquiries", error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     if (!isLoggedIn) {
         return (
@@ -40,6 +61,12 @@ export default function AdminDashboard() {
             </div>
         );
     }
+
+    // Helper to format date
+    const formatDate = (dateStr: string) => {
+        const date = new Date(dateStr);
+        return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    };
 
     return (
         <div className="min-h-screen bg-background flex">
@@ -98,7 +125,7 @@ export default function AdminDashboard() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
                     {[
                         { label: "Profile Views", value: "1,284", change: "+12%" },
-                        { label: "New Inquiries", value: "14", change: "+4" },
+                        { label: "Total Inquiries", value: inquiries.length.toString(), change: inquiries.length > 0 ? "Active" : "None" },
                         { label: "Project Clicks", value: "432", change: "+24%" }
                     ].map((stat, idx) => (
                         <GlassCard key={idx} className="p-6" hoverEffect={false}>
@@ -116,22 +143,29 @@ export default function AdminDashboard() {
                     <GlassCard className="p-0 overflow-hidden" hoverEffect={false}>
                         <div className="p-6 border-b border-white/5 flex justify-between items-center">
                             <h3 className="font-bold text-white">Recent Inquiries</h3>
-                            <button className="text-xs text-accent-blue font-bold uppercase">View All</button>
+                            <button onClick={fetchInquiries} className="text-xs text-accent-blue font-bold uppercase">Refresh</button>
                         </div>
                         <div className="divide-y divide-white/5">
-                            {[
-                                { name: "John Smith", project: "Retail Dashboard", date: "2 hrs ago" },
-                                { name: "Sarah Williams", project: "SQL Audit", date: "5 hrs ago" },
-                                { name: "David Chen", project: "MIS Automation", date: "1 day ago" }
-                            ].map((item, idx) => (
-                                <div key={idx} className="p-6 flex justify-between items-center hover:bg-white/5 transition-colors cursor-pointer">
-                                    <div>
-                                        <p className="text-sm font-bold text-white">{item.name}</p>
-                                        <p className="text-xs text-slate-500">{item.project}</p>
+                            {loading ? (
+                                <div className="p-12 text-center text-slate-500">Loading inquiries...</div>
+                            ) : inquiries.length === 0 ? (
+                                <div className="p-12 text-center text-slate-500">No inquiries yet.</div>
+                            ) : (
+                                inquiries.slice(0, 5).map((item, idx) => (
+                                    <div key={idx} className="p-6 flex justify-between items-center hover:bg-white/5 transition-colors cursor-pointer group">
+                                        <div className="flex-1">
+                                            <div className="flex items-center justify-between mb-1">
+                                                <p className="text-sm font-bold text-white">{item.name}</p>
+                                                <span className="text-[10px] text-slate-600 font-mono">{formatDate(item.date)}</span>
+                                            </div>
+                                            <p className="text-xs text-accent-blue mb-1">{item.service}</p>
+                                            <p className="text-xs text-slate-500 italic line-clamp-1 group-hover:line-clamp-none transition-all">
+                                                "{item.message}"
+                                            </p>
+                                        </div>
                                     </div>
-                                    <span className="text-[10px] text-slate-600 font-mono">{item.date}</span>
-                                </div>
-                            ))}
+                                ))
+                            )}
                         </div>
                     </GlassCard>
 
