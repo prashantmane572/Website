@@ -1,22 +1,26 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #020617; /* Deep Navy */
-  --color-foreground: #f8fafc;
-  
-  --color-accent-blue: #3b82f6;
-  --color-accent-purple: #8b5cf6;
-  --color-accent-yellow: #eab308; /* BI Highlight */
-  
-  --color-card: rgba(15, 23, 42, 0.7);
-  --color-card-border: rgba(51, 65, 85, 0.5);
-  
+  --color-background: #000000;
+  /* Pure Black */
+  --color-foreground: #ffffff;
+
+  --color-accent-blue: #00f2ff;
+  /* Neon Blue */
+  --color-accent-purple: #a855f7;
+  /* Radiant Purple */
+  --color-accent-yellow: #facc15;
+  /* Bright Gold */
+
+  --color-card: rgba(10, 10, 10, 0.85);
+  --color-card-border: rgba(255, 255, 255, 0.08);
+
   --font-sans: "Inter", "Poppins", ui-sans-serif, system-ui;
 }
 
 :root {
-  --background: #020617;
-  --foreground: #f8fafc;
+  --background: #000000;
+  --foreground: #ffffff;
 }
 
 @layer base {
@@ -27,20 +31,88 @@
 
 @layer utilities {
   .glass {
-    @apply backdrop-blur-md bg-card border border-card-border;
+    @apply backdrop-blur-xl bg-card border border-card-border;
   }
-  
+
   .glass-hover {
-    @apply transition-all duration-300 hover:bg-card/80 hover:border-accent-blue/50 hover:shadow-[0_0_20px_rgba(59,130,246,0.15)];
+    @apply transition-all duration-500;
   }
-  
+
+  .glass-hover:hover {
+    background-color: rgba(10, 10, 10, 0.95);
+    border-color: rgba(0, 242, 255, 0.4);
+    box-shadow: 0 0 30px rgba(0, 242, 255, 0.1);
+  }
+
   .glow-text {
-    @apply text-transparent bg-clip-text bg-gradient-to-r from-accent-blue to-accent-purple;
+    @apply text-transparent bg-clip-text bg-gradient-to-r from-accent-blue via-accent-purple to-accent-blue bg-[length:200%_auto];
+    animation: glow-flow 6s ease infinite;
   }
 
   .grid-overlay {
-    background-image: radial-gradient(circle at 1px 1px, rgba(51, 65, 85, 0.2) 1px, transparent 0);
-    background-size: 32px 32px;
+    background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.03) 1px, transparent 0);
+    background-size: 40px 40px;
+  }
+
+  /* BI Dashboard Animations */
+  @keyframes scan {
+    0% {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+
+    50% {
+      opacity: 1;
+    }
+
+    100% {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+  }
+
+  @keyframes glow-flow {
+    0% {
+      background-position: 0% 50%;
+    }
+
+    50% {
+      background-position: 100% 50%;
+    }
+
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  @keyframes pulse-border {
+
+    0%,
+    100% {
+      border-color: rgba(0, 242, 255, 0.3);
+      box-shadow: 0 0 5px rgba(0, 242, 255, 0.1);
+    }
+
+    50% {
+      border-color: rgba(168, 85, 247, 0.6);
+      box-shadow: 0 0 15px rgba(168, 85, 247, 0.2);
+    }
+  }
+
+  .animate-scan {
+    animation: scan 4s linear infinite;
+  }
+
+  .animate-glow-flow {
+    animation: glow-flow 6s ease infinite;
+  }
+
+  .animate-scan-slow {
+    animation: scan 8s linear infinite;
+  }
+
+  .animate-pulse-border {
+    animation: pulse-border 3s ease-in-out infinite;
   }
 }
 
