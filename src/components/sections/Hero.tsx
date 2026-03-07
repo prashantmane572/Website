@@ -11,14 +11,36 @@ import {
 } from "lucide-react";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { heroSkills } from "@/lib/data";
+import { DataStreamBackground } from "@/components/ui/DataStreamBackground";
 
 export const Hero = () => {
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1,
+                delayChildren: 0.3
+            }
+        }
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0 }
+    };
+
     return (
         <section id="home" className="relative min-h-screen pt-24 pb-12 overflow-hidden">
             {/* Background Effects */}
             <div className="absolute inset-0 grid-overlay -z-10" />
-            <div className="absolute -top-24 -left-24 w-96 h-96 bg-accent-blue/10 blur-[120px] rounded-full -z-10" />
-            <div className="absolute top-1/2 -right-24 w-64 h-64 bg-accent-purple/10 blur-[100px] rounded-full -z-10" />
+            <DataStreamBackground />
+
+            {/* Animated Scanline Overlay - Intensified for black theme */}
+            <div className="absolute inset-x-0 h-1/2 bg-gradient-to-b from-accent-blue/10 to-transparent top-0 -z-10 animate-scan pointer-events-none opacity-40" />
+
+            <div className="absolute -top-24 -left-24 w-96 h-96 bg-accent-blue/15 blur-[140px] rounded-full -z-10" />
+            <div className="absolute top-1/2 -right-24 w-64 h-64 bg-accent-purple/15 blur-[120px] rounded-full -z-10" />
 
             <div className="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-12 gap-12">
                 {/* Left Content */}
@@ -26,7 +48,7 @@ export const Hero = () => {
                     <motion.div
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.5 }}
+                        transition={{ duration: 0.8, ease: "easeOut" }}
                     >
                         <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-accent-blue/10 border border-accent-blue/20 text-accent-blue text-xs font-bold uppercase tracking-widest mb-6">
                             <span className="relative flex h-2 w-2">
@@ -92,22 +114,29 @@ export const Hero = () => {
                 </div>
 
                 {/* Right Skills Snapshot (Mini Dashboard) */}
-                <div className="lg:col-span-12 xl:col-span-4 lg:grid lg:grid-cols-2 lg:gap-4 xl:flex xl:flex-col xl:space-y-4">
+                <motion.div
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate="visible"
+                    className="lg:col-span-12 xl:col-span-4 lg:grid lg:grid-cols-2 lg:gap-4 xl:flex xl:flex-col xl:space-y-4"
+                >
                     {heroSkills.map((skill, idx) => (
-                        <GlassCard key={idx} className="p-4" hoverEffect>
-                            <div className="flex items-center space-x-4">
-                                <div className="p-3 bg-slate-800/50 rounded-lg group-hover:bg-accent-blue/20 transition-colors">
-                                    <skill.icon className="w-6 h-6 text-accent-blue" />
+                        <motion.div key={idx} variants={itemVariants}>
+                            <GlassCard className="p-4" hoverEffect>
+                                <div className="flex items-center space-x-4">
+                                    <div className="p-3 bg-slate-800/50 rounded-lg group-hover:bg-accent-blue/20 transition-colors">
+                                        <skill.icon className="w-6 h-6 text-accent-blue" />
+                                    </div>
+                                    <div>
+                                        <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold">{skill.category}</p>
+                                        <h3 className="text-lg font-bold text-white">{skill.name}</h3>
+                                        <p className="text-xs text-slate-400">{skill.details}</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold">{skill.category}</p>
-                                    <h3 className="text-lg font-bold text-white">{skill.name}</h3>
-                                    <p className="text-xs text-slate-400">{skill.details}</p>
-                                </div>
-                            </div>
-                        </GlassCard>
+                            </GlassCard>
+                        </motion.div>
                     ))}
-                </div>
+                </motion.div>
             </div>
         </section>
     );

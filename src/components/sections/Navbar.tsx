@@ -142,9 +142,10 @@ export const Navbar = () => {
                 </div>
 
                 <div className="max-w-7xl mx-auto flex justify-between items-center py-2 relative z-10">
-                    <motion.div
+                    <motion.a
+                        href="/#home"
                         whileHover={{ scale: 1.05, rotate: [0, -5, 5, 0] }}
-                        className="flex items-center space-x-3 cursor-pointer group/logo"
+                        className="flex items-center space-x-3 cursor-pointer group/logo pointer-events-auto"
                     >
                         <div className="relative">
                             <div className="w-9 h-9 bg-accent-blue/10 border border-accent-blue/40 rounded flex items-center justify-center overflow-hidden">
@@ -156,7 +157,7 @@ export const Navbar = () => {
                         <span className="text-xl font-black tracking-tighter text-white uppercase italic">
                             Prashant_Mane
                         </span>
-                    </motion.div>
+                    </motion.a>
 
                     {/* Desktop Nav */}
                     <nav className="hidden lg:flex items-center space-x-2">

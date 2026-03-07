@@ -23,8 +23,8 @@ export const GlassCard = ({ children, className, hoverEffect = true }: GlassCard
         >
             <div className="relative z-10">{children}</div>
 
-            {/* Subtle corner accent */}
-            <div className="absolute top-0 right-0 w-16 h-16 bg-accent-blue/5 rounded-bl-3xl blur-2xl group-hover:bg-accent-blue/10 transition-colors" />
+            {/* Subtle corner accent - Sharpened for black theme */}
+            <div className="absolute top-0 right-0 w-20 h-20 bg-accent-blue/10 rounded-bl-3xl blur-2xl group-hover:bg-accent-blue/20 transition-all duration-500" />
         </motion.div>
     );
 };

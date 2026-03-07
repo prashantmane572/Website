@@ -26,19 +26,40 @@ const timeline = [
 ];
 
 export const About = () => {
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1
+            }
+        }
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+    };
+
     return (
         <section id="about" className="pt-20">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
                 {/* Left: Content */}
-                <div className="lg:col-span-7 space-y-8">
-                    <div className="flex flex-col space-y-4">
+                <motion.div
+                    variants={containerVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true }}
+                    className="lg:col-span-7 space-y-8"
+                >
+                    <motion.div variants={itemVariants} className="flex flex-col space-y-4">
                         <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight">
                             From ERP Operations to <br />
                             <span className="glow-text tracking-tight italic">Business Intelligence</span>
                         </h2>
-                    </div>
+                    </motion.div>
 
-                    <div className="space-y-6 text-slate-400 leading-relaxed text-lg">
+                    <motion.div variants={itemVariants} className="space-y-6 text-slate-400 leading-relaxed text-lg">
                         <p>
                             With over 8 years of professional experience, my journey has evolved from the
                             ground-up operations in Retail and Garment Merchandising to high-level Business Intelligence consultancy.
@@ -48,10 +69,10 @@ export const About = () => {
                             I don't just build dashboards; I build solutions that address real business
                             pain points like inventory accuracy, OTD delays, and reporting inefficiencies.
                         </p>
-                    </div>
+                    </motion.div>
 
-                    <div className="flex flex-wrap gap-4 pt-4">
-                        <button className="px-6 py-3 bg-white text-black rounded-lg font-bold hover:bg-slate-200 transition-all flex items-center space-x-2">
+                    <motion.div variants={itemVariants} className="flex flex-wrap gap-4 pt-4">
+                        <button className="px-6 py-3 bg-white text-black rounded-lg font-bold hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all flex items-center space-x-2">
                             <Download className="w-4 h-4" />
                             <span>Download Resume</span>
                         </button>
@@ -59,10 +80,10 @@ export const About = () => {
                             <Linkedin className="w-5 h-5 text-[#0077b5]" />
                             <span>LinkedIn</span>
                         </a>
-                    </div>
+                    </motion.div>
 
                     {/* Certifications Snapshot */}
-                    <div className="pt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <motion.div variants={itemVariants} className="pt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="p-4 glass rounded-xl border-l-4 border-accent-blue flex items-center space-x-4">
                             <Award className="w-10 h-10 text-accent-blue" />
                             <div>
@@ -77,12 +98,12 @@ export const About = () => {
                                 <p className="text-xs text-slate-500">SAP Business One & HANA</p>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </motion.div>
+                </motion.div>
 
                 {/* Right: Timeline */}
                 <div className="lg:col-span-5 relative">
-                    <div className="absolute left-6 top-0 bottom-0 w-px bg-gradient-to-b from-accent-blue via-accent-purple to-transparent opacity-20" />
+                    <div className="absolute left-6 top-0 bottom-0 w-px bg-gradient-to-b from-accent-blue via-accent-purple to-transparent opacity-30" />
 
                     <div className="space-y-12">
                         {timeline.map((item, idx) => (
@@ -93,7 +114,7 @@ export const About = () => {
                                 transition={{ delay: idx * 0.2 }}
                                 className="relative pl-14"
                             >
-                                <div className="absolute left-5 -translate-x-1/2 w-3 h-3 rounded-full bg-accent-blue ring-4 ring-accent-blue/20" />
+                                <div className="absolute left-5 -translate-x-1/2 w-3 h-3 rounded-full bg-accent-blue ring-4 ring-accent-blue/40" />
                                 <span className="inline-block px-2 py-0.5 rounded bg-accent-blue/10 text-accent-blue text-[10px] font-bold uppercase tracking-widest mb-1">
                                     {item.period}
                                 </span>
