@@ -54,7 +54,7 @@ const navItems = [
     { name: "PROJECTS", icon: BarChart3, href: "/projects" },
     { name: "BLOGS", icon: Database, href: "/blogs" },
     { name: "SERVICES", icon: Briefcase, href: "/services" },
-    { name: "ABOUT", icon: User, href: "/#about" },
+    { name: "ABOUT", icon: User, href: "/about" },
     { name: "CONTACT", icon: Mail, href: "/#contact" },
 ];
 
