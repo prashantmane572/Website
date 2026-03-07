@@ -50,7 +50,7 @@ const DecryptedText = ({ text, isHovered }: { text: string; isHovered: boolean }
 };
 
 const navItems = [
-    { name: "PORTFOLIO", icon: LayoutDashboard, href: "/#home" },
+    { name: "PORTFOLIO", icon: LayoutDashboard, href: "/portfolio" },
     { name: "PROJECTS", icon: BarChart3, href: "/projects" },
     { name: "BLOGS", icon: Database, href: "/blogs" },
     { name: "SERVICES", icon: Briefcase, href: "/services" },
